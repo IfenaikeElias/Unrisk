@@ -1,0 +1,5 @@
+*.pyc
+.newenv
+/data
+notebooks/lightning_logs
+/models
