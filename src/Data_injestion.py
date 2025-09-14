@@ -88,12 +88,17 @@ class Injest:
         general_data = self.createfeatures(general_data, tickers).ffill().bfill()
         return general_data
 
-tickers = {"stock_ticker":['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'JNJ', 'PFE', 'JPM', 'GS', 'XOM', 'CVX'],
-           "ETF_ticker": ['XLK', 'XLV', 'XLF', 'XLE']}
-injestor = Injest(tickers, dt.datetime(2025, 6, 1))
-
-df = injestor.aggregate()
-df.to_csv(f"{root}/data/clean_data/df.csv", index= True)
+if __name__ == "__main__":
+    # Example usage for local runs only. Wrapped under main guard to avoid
+    # execution during imports (e.g., from Prefect flows).
+    tickers = {
+        "stock_ticker": [
+            'AAPL', 'GOOGL', 'MSFT', 'AMZN', 'JNJ', 'PFE', 'JPM', 'GS', 'XOM', 'CVX'
+        ],
+        "ETF_ticker": ['XLK', 'XLV', 'XLF', 'XLE']
+    }
+    injestor = Injest(tickers, dt.datetime(2025, 6, 1))
+    df = injestor.aggregate()
+    df.to_csv(f"{root}/data/clean_data/df.csv", index=True)
     
-
 
