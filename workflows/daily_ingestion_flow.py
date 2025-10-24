@@ -10,10 +10,11 @@ from prefect import flow, task, get_run_logger
 
 @task(name="load_tickers", retries=0)
 def load_tickers() -> Dict[str, List[str]]:
-    """Return default tickers for stocks and ETFs.
-
-    Adjust this task to load from config or env if desired.
     """
+    Return default tickers for stocks and ETFs.
+    """
+
+    # TODO: Adjust this task to load from config or env if desired.
     return {
         "stock_ticker": ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'JNJ', 'PFE', 'JPM', 'GS', 'XOM', 'CVX'],
         "ETF_ticker": ['XLK', 'XLV', 'XLF', 'XLE'],
@@ -24,14 +25,12 @@ def load_tickers() -> Dict[str, List[str]]:
 def build_injestor(
     tickers: Dict[str, List[str]],
     end_date: Optional[dt.datetime] = None,
-    up_to_days: int = 6,
-):
-    """Instantiate the `Injest` class from `src.Data_injestion`.
-
-    Notes:
-    - `Data_injestion.py` has a protected `__main__` block to avoid side effects on import.
-    - `end_date` defaults to now if not provided.
+    up_to_days: int = 6, ):  
     """
+    instantiate the Injest class which contains methods for injection and aggregation.
+    """
+    # end_date defaults to now if not provided.
+    
     from src.Data_injestion import Injest  # lazy import to avoid side-effects during module load
 
     if end_date is None:
@@ -41,13 +40,14 @@ def build_injestor(
 
 @task(name="aggregate_data")
 def aggregate_data(injestor) -> pd.DataFrame:
-    """Run the injestor aggregate and return a dataframe."""
+    """This runs the injestor aggregate method and return a dataframe."""
     return injestor.aggregate()
 
 
 @task(name="save_output")
 def save_output(df: pd.DataFrame, output_path: str = "data/clean_data/general_data.csv") -> str:
-    """Save the aggregated dataframe to CSV and return the saved path."""
+    """This saves the aggregated dataframe to CSV and return the saved path."""
+    # TODO: save to a Timescale DB
     out = Path(output_path)
     out.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(out, index=True)
@@ -61,14 +61,8 @@ def daily_ingestion_flow(
     up_to_days: int = 6,
     output_path: str = "data/clean_data/general_data.csv",
 ):
-    """Orchestrate daily ingestion for inference.
-
-    Parameters
-    - tickers: Optional override for tickers dict.
-    - end_date: Optional ISO date/time string; defaults to now if not provided.
-    - up_to_days: Lookback window in days for initial data fetch.
-    - output_path: Where to save the aggregated dataset.
-    """
+    # Orchestrate daily ingestion for inference.
+    
     logger = get_run_logger()
 
     if tickers is None:
@@ -87,6 +81,6 @@ def daily_ingestion_flow(
 
 
 if __name__ == "__main__":
-    # Run once locally (no schedule) for quick testing
+    # Run once locally (no schedule) for quick testing...
     daily_ingestion_flow()
 
