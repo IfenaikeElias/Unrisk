@@ -99,6 +99,4 @@ if __name__ == "__main__":
     }
     injestor = Injest(tickers, dt.datetime(2025, 6, 1))
     df = injestor.aggregate()
-    df.to_csv(f"{root}/data/clean_data/df.csv", index=True)
-    
-
+    df.to_csv(f"{root}/data/clean_data/df.csv", index=True) 
