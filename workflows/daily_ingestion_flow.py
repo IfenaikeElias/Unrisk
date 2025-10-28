@@ -8,7 +8,7 @@ import pandas as pd
 from prefect import flow, task, get_run_logger
 
 
-@task(name="load_tickers", retries=0)
+@task(name="load_tickers", retries=2)
 def load_tickers() -> Dict[str, List[str]]:
     """
     Return default tickers for stocks and ETFs.
@@ -21,11 +21,11 @@ def load_tickers() -> Dict[str, List[str]]:
     }
 
 
-@task(name="build_injestor")
+@task(name="build_injestor", retries=2)
 def build_injestor(
     tickers: Dict[str, List[str]],
     end_date: Optional[dt.datetime] = None,
-    up_to_days: int = 6, ):  
+    up_to_days: int = 6):
     """
     instantiate the Injest class which contains methods for injection and aggregation.
     """
@@ -38,13 +38,13 @@ def build_injestor(
     return Injest(tickers=tickers, end_date=end_date, up_to=up_to_days)
 
 
-@task(name="aggregate_data")
+@task(name="aggregate_data", retries=2)
 def aggregate_data(injestor) -> pd.DataFrame:
     """This runs the injestor aggregate method and return a dataframe."""
     return injestor.aggregate()
 
 
-@task(name="save_output")
+@task(name="save_output", retries=2)
 def save_output(df: pd.DataFrame, output_path: str = "data/clean_data/general_data.csv") -> str:
     """This saves the aggregated dataframe to CSV and return the saved path."""
     # TODO: save to a Timescale DB
@@ -81,6 +81,5 @@ def daily_ingestion_flow(
 
 
 if __name__ == "__main__":
-    # Run once locally (no schedule) for quick testing...
+    # Run once locally without schedule for quick testing...
     daily_ingestion_flow()
-
