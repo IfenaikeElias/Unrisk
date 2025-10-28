@@ -4,3 +4,6 @@
 notebooks/lightning_logs
 /models
 /.env
+mlruns/
+notebooks/Data_Extraction.ipynb
+notebooks/Feature_Engineering.ipynb
