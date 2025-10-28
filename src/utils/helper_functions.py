@@ -61,6 +61,3 @@ def my_lstm_config(trial: optuna.Trial):
     }
     config.update(**trainer_kwargs)
     return config
-
-
-
