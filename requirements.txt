@@ -1,0 +1,11 @@
+auto_mix_prep==0.2.0
+neuralforecast==3.0.2
+numpy==2.3.4
+optuna==4.4.0
+pandas==2.3.3
+pandas_datareader==0.10.0
+python_dateutil==2.9.0.post0
+SQLAlchemy==2.0.44
+torch==2.6.0
+yfinance==0.2.65
+prefect==3.4.18
