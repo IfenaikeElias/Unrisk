@@ -24,7 +24,7 @@ sleep 5
 
 # Create market_data table & hypertable
 echo "Creating market_data table and hypertable..."
-docker exec -i timescaledb psql -U admin -d mytimescale <<'SQL'
+docker exec -i timescaledb psql -U admin -d stockDB <<'SQL'
 CREATE TABLE IF NOT EXISTS market_data (
     time TIMESTAMPTZ NOT NULL,
     ticker TEXT NOT NULL,

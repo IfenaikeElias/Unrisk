@@ -5,8 +5,7 @@ from sqlalchemy import create_engine
 from utils.helper_functions import wide_to_long 
 
 # DB URL
-DB_URL = "postgresql+psycopg2://admin:password@localhost:5432/mytimescale"
-
+DB_URL = "postgresql+psycopg2://admin:password@localhost:5432/stockDB"
 # Get last 1+ year of data
 end_date = dt.datetime.now()
 start_date = end_date - dt.timedelta(days=365)
